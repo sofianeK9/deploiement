@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter Commande</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">E-Commerce</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="produits.html">Produits</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ajouter_produit.html">Ajouter Produit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="commandes.html">Commandes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="ajouter_commande.html">Ajouter Commande</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1>Ajouter une commande</h1>
+        <form id="commandeForm">
+            <div class="mb-3">
+                <label for="nomClient" class="form-label">Nom du client</label>
+                <input type="text" class="form-control" id="nomClient" required>
+            </div>
+            <div class="mb-3">
+                <label for="dateCommande" class="form-label">Date de commande</label>
+                <input type="date" class="form-control" id="dateCommande" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('commandeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const nomClient = document.getElementById('nomClient').value;
+            const dateCommande = document.getElementById('dateCommande').value;
+
+            fetch('../backend/api/commandes.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nom_client: nomClient, date_commande: dateCommande })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                document.getElementById('commandeForm').reset();
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Une erreur est survenue lors de l\'ajout de la commande.');
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
